@@ -1,15 +1,9 @@
-<div
-	class="modal fade"
-	id="labeled-sample"
-	tabindex="-1"
-	aria-labelledby="labeledSampleModalLabel"
-	aria-hidden="true"
->
+<div class="modal fade" id="labeled-sample" tabindex="-1" aria-labelledby="labeledSampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
-		<?= form_open("samples/labeled");?>
+		<?= form_open("samples/labeled"); ?>
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="labeledSampleModalLabel">Labeling Sample</h5>
+				<h5 class="modal-title" id="labeledSampleModalLabel">Labelling Sample</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
@@ -21,13 +15,13 @@
 						<option value="EXTRACTING">EXTRACTING</option>
 						<option value="MIXING">MIXING</option>
 						<option value="PCR">PCR</option>
-						<option value="TIDAK_LAYAK">TIDAK LAYAK</option>
+						<option value="TIDAK_LAYAK">SAMPEL TIDAK LAYAK</option>
 					</select>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-				<button type="submit" class="btn btn-primary">Save</button>
+				<button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+				<button type="submit" class="btn btn-danger">Save</button>
 			</div>
 		</div>
 		<?= form_close(); ?>

@@ -1,15 +1,9 @@
-<div
-	class="modal fade"
-	id="verified-sample"
-	tabindex="-1"
-	aria-labelledby="verifiedSampleModalLabel"
-	aria-hidden="true"
->
+<div class="modal fade" id="verified-sample" tabindex="-1" aria-labelledby="verifiedSampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
-		<?= form_open("samples/verified");?>
+		<?= form_open("samples/verified"); ?>
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="verifiedSampleModalLabel">Verifikasi Sample</h5>
+				<h5 class="modal-title" id="verifiedSampleModalLabel">Verifikasi Sampel</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
@@ -24,8 +18,8 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-				<button type="submit" class="btn btn-primary">Save</button>
+				<button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+				<button type="submit" class="btn btn-danger">Save</button>
 			</div>
 		</div>
 		<?= form_close(); ?>

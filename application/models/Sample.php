@@ -31,9 +31,9 @@ class Sample extends CI_Model
 			->result();
 	}
 
-	public function getWhere($key = NULL, $value = NULL)
+	public function getWhere($key = NULL, $value = NULL, $type = 'BASIC')
 	{
-		return $this->db
+		$this->db
 			->select(
 				'samples.id, samples.patient_id, samples.checkup_id, '.
 				'samples.explanation_id, samples.code, samples.indications, '.
@@ -50,10 +50,18 @@ class Sample extends CI_Model
 			->from('samples')
 			->join('patients', 'samples.patient_id = patients.id', 'left')
 			->join('checkups', 'samples.checkup_id = checkups.id', 'left')
-			->join('explanations', 'samples.explanation_id = explanations.id', 'left')
-			->where($key, $value)
-			->get()
-			->result();
+			->join('explanations', 'samples.explanation_id = explanations.id', 'left');
+
+		if ($type === 'BASIC') {
+			$this->db->where($key, $value);
+		} else {
+			$this->db->like($key, $value);
+			$this->db->or_like('patients.nik', $value);
+			$this->db->or_like('patients.phone', $value);
+			$this->db->or_like('patients.name', $value);
+		}
+
+		return $this->db->get()->result();
 	}
 
 	public function findBy($key = NULL, $value = NULL)

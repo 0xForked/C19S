@@ -21,3 +21,4 @@
 <script src="<?= base_url('assets/vendor/volt/dist/js/volt.js') ?>"></script>
 <script src="<?= base_url('assets/js/notify.js') ?>"></script>
 <script src="<?= base_url('assets/js/qrcode.js') ?>"></script>
+<script src="<?= base_url('assets/js/qrcode-scanner.js') ?>"></script>

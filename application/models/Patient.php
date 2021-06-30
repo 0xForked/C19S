@@ -16,6 +16,24 @@ class Patient extends CI_Model
 			->result();
 	}
 
+	public function getWhere($key = NULL, $value = NULL, $type = 'BASIC')
+	{
+		$this->db
+			->select('*')
+			->from('patients');
+
+		if ($type === 'BASIC') {
+			$this->db->where($key, $value);
+		} else {
+			$this->db->like($key, $value);
+			$this->db->or_like('nik', $value);
+			$this->db->or_like('phone', $value);
+			$this->db->or_like('name', $value);
+		}
+
+		return $this->db->get()->result();
+	}
+
 	public function findBy($key = NULL, $value = NULL)
 	{
 		$this->db->select('*')->from('patients');

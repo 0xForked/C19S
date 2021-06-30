@@ -10,7 +10,7 @@ class Checkup extends CI_Model
 	public function get()
 	{
 		return $this->db
-			->select('id, title')
+			->select('id, title, (SELECT COUNT(*) FROM samples WHERE checkup_id = checkups.id) as samples_count')
 			->from('checkups')
 			->get()
 			->result();

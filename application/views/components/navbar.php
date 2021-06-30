@@ -5,40 +5,37 @@
 				<!-- Search form -->
 				<form class="navbar-search form-inline" id="navbar-search-main">
 					<div class="input-group input-group-merge search-bar">
-                        <span class="input-group-text" id="topbar-addon">
-                            <span class="fas fa-search"></span>
-                        </span>
+						<span class="input-group-text" id="topbar-addon">
+							<span class="fas fa-search"></span>
+						</span>
 						<input
 							type="text"
 							class="form-control"
-							id="topbarInputIconLeft"
+							id="searchInputField"
 							placeholder="Search"
 							aria-label="Search"
 							aria-describedby="topbar-addon"
+							value="<?= $this->input->get('q') ?>"
 						>
 					</div>
 				</form>
+				<div class="ms-3">
+					<a data-bs-toggle="modal" data-bs-target="#scanner-modal" href="#" class="btn btn-icon-only bg-secondary-alt">
+						<i class="fas fa-qrcode"></i>
+					</a>
+				</div>
 			</div>
+
 			<!-- Navbar links -->
 			<ul class="navbar-nav align-items-center">
 				<li class="nav-item dropdown">
-					<a
-						class="nav-link dropdown-toggle pt-1 px-0"
-						href="#"
-						role="button"
-						data-bs-toggle="dropdown"
-						aria-expanded="false"
-					>
+					<a class="nav-link dropdown-toggle pt-1 px-0" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 						<div class="media d-flex align-items-center">
-							<img
-								class="user-avatar md-avatar rounded-circle"
-								alt="Image placeholder"
-								src="<?= default_profile_picture($this->session->full_name) ?>"
-							>
+							<img class="user-avatar md-avatar rounded-circle" alt="Image placeholder" src="<?= default_profile_picture($this->session->full_name) ?>">
 							<div class="media-body ms-3 text-dark align-items-center d-none d-lg-block">
-                                <span class="mb-0 font-small fw-bold">
-                                   Hello, <?= $this->session->full_name ?>
-                                </span>
+								<span class="mb-0 font-small fw-bold">
+									Hello, <?= $this->session->full_name ?>
+								</span>
 							</div>
 						</div>
 					</a>
