@@ -139,7 +139,17 @@
 													<?php if($sample->status !== 'VERIFIED' && $sample->label_status === "PCR"): ?>
 														<!--  hanya akan terlihat pada admin dan validator	-->
 														<?php if ((int)$this->session->role_id === USER_ROLE_ADMIN || (int)$this->session->role_id === USER_ROLE_VALIDATOR) : ?>
-															<a href="#" data-bs-toggle="modal" data-bs-target="#verified-sample" data-bs-sampleid="<?= $sample->id ?>" class="dropdown-item text-success">
+															<?php $ct_value = json_decode($sample->logs["PCR"]->description) ?>
+															<a href="#"
+															   data-bs-toggle="modal"
+															   data-bs-target="#verified-sample"
+															   data-bs-sampleid="<?= $sample->id ?>"
+															   data-bs-samplefam="<?= $ct_value->FAM ?>"
+															   data-bs-samplecy5="<?= $ct_value->Cy5 ?>"
+															   data-bs-samplerox="<?= $ct_value->ROX ?>"
+															   data-bs-samplejoe="<?= $ct_value->JOE ?>"
+															   class="dropdown-item text-success"
+															>
 																<span class="fas fa-check-circle me-2"></span>
 																Verifikasi
 															</a>
@@ -155,8 +165,15 @@
 
 													<a href="<?= base_url("samples/$sample->id/print") ?>" target="_blank" class="dropdown-item">
 														<span class="fas fa-print me-2"></span>
-														Print
+														Cetak (Kode QR)
 													</a>
+
+													<?php if($sample->status === 'VERIFIED'): ?>
+														<a href="#" target="_blank" class="dropdown-item">
+															<span class="fas fa-print me-2"></span>
+															Cetak (Hasil Akhir)
+														</a>
+													<?php endif; ?>
 
 													<?php if ((int)$this->session->role_id === USER_ROLE_ADMIN || (int)$this->session->role_id === USER_ROLE_INPUTOR) : ?>
 														<a href="<?= base_url("samples/$sample->id/delete") ?>" class="dropdown-item text-danger rounded-bottom">
@@ -201,8 +218,24 @@
 		verifiedSample.addEventListener('show.bs.modal', function(event) {
 			let button = event.relatedTarget
 			let recipient = button.getAttribute('data-bs-sampleid')
+			let fam = button.getAttribute('data-bs-samplefam')
+			let cy5 = button.getAttribute('data-bs-samplecy5')
+			let rox = button.getAttribute('data-bs-samplerox')
+			let joe = button.getAttribute('data-bs-samplejoe')
 			let modalBodyInput = verifiedSample.querySelector('.modal-body input')
 			modalBodyInput.value = recipient
+
+			let ctData = `
+				<tr>
+					<td>${fam}</td>
+					<td>${cy5}</td>
+					<td>${rox}</td>
+					<td>${joe}</td>
+				</tr>
+			`
+			let ctTable = document.getElementById('verified-detail-table').getElementsByTagName('tbody')[0];
+			// let newRow = ctTable.insertRow(ctTable.rows.length);
+			ctTable.innerHTML = ctData
 		})
 
 		let labelStatus = document.getElementById('label_status')
@@ -215,16 +248,16 @@
 
 			if (this.value === 'PCR') {
 				pcrData.classList.remove('d-none')
-				fam.setAttribute("required", "")
-				cy5.setAttribute("required", "")
-				rox.setAttribute("required", "")
-				joe.setAttribute("required", "")
+				// fam.setAttribute("required", "")
+				// cy5.setAttribute("required", "")
+				// rox.setAttribute("required", "")
+				// joe.setAttribute("required", "")
 			} else {
 				pcrData.classList.add('d-none')
-				fam.removeAttribute("required")
-				cy5.removeAttribute("required")
-				rox.removeAttribute("required")
-				joe.removeAttribute("required")
+				// fam.removeAttribute("required")
+				// cy5.removeAttribute("required")
+				// rox.removeAttribute("required")
+				// joe.removeAttribute("required")
 			}
 		})
 	</script>

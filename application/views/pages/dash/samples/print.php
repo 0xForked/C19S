@@ -24,19 +24,13 @@
 											<td>NAMA: <?= $sample->patient_name ?></td>
 										</tr>
 										<tr>
-											<td>UMUR: <?= calculate_age($sample->patient_date_of_birth) ?></td>
-										</tr>
-										<tr>
-											<td>JENIS KELAMIN: <?= $sample->patient_gender ?></td>
+											<td>UMUR/JENIS KELAMIN: <?= calculate_age($sample->patient_date_of_birth) ?>/ <?= $sample->patient_gender ?></td>
 										</tr>
 										<tr>
 											<td>KETERANGAN SWAB: <?= $sample->explanation_title ?></td>
 										</tr>
 										<tr>
 											<td>TUJUAN PEMERIKSAAN: <?= $sample->checkup_title ?></td>
-										</tr>
-										<tr>
-											<td>STATUS: <?= $sample->label_status ?></td>
 										</tr>
 									</tbody>
 								</table>

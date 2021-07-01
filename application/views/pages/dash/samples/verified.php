@@ -8,8 +8,22 @@
 			</div>
 			<div class="modal-body">
 				<input type="hidden" name="id" id="id">
+				<div id="verified-detail">
+					<label for="verified-detail-table" class="col-form-label">CT Data</label>
+					<table class="table table-bordered table-responsive" id="verified-detail-table">
+						<thead class="text-center">
+						<tr>
+							<th>FAM</th>
+							<th>ROX</th>
+							<th>Cy5</th>
+							<th>JOE</th>
+						</tr>
+						</thead>
+						<tbody class="text-center"></tbody>
+					</table>
+				</div>
 				<div class="mb-3">
-					<label for="verify_status" class="col-form-label"></label>
+					<label for="verify_status" class="col-form-label">Verifikasi</label>
 					<select name="verify_status" id="verify_status" class="form-select">
 						<option value="NONE">Pilih status verifikasi</option>
 						<option value="POSITIVE">POSITIVE</option>

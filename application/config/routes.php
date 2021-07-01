@@ -78,6 +78,8 @@ $route['samples/labeled'] = 'Dash/SampleController/labeled';
 $route['samples/verified'] = 'Dash/SampleController/verified';
 $route['samples/(:num)/print'] = 'Dash/SampleController/print/$1';
 
+$route['samples/export/csv'] = 'Dash/SampleController/exportCSV';
+
 $route['users/accounts'] = 'Dash/UserAccountController/index';
 $route['users/accounts/create']['POST'] = 'Dash/UserAccountController/create';
 $route['users/accounts/(:num)'] = 'Dash/UserAccountController/show/$1';
