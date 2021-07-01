@@ -18,6 +18,36 @@
 						<option value="TIDAK_LAYAK">SAMPEL TIDAK LAYAK</option>
 					</select>
 				</div>
+				<div id="pcr-detail"  class="row d-none">
+					<div class="col-6">
+						<div class="form-group mb-4">
+							<label for="fam">Gen Orflab (FAM)</label>
+							<div class="input-group">
+								<input id="fam" type="number" name="fam" class="form-control">
+							</div>
+						</div>
+						<div class="form-group mb-4">
+							<label for="cy5">Gen N (Cy5)</label>
+							<div class="input-group">
+								<input id="cy5" type="number" name="cy5" class="form-control">
+							</div>
+						</div>
+					</div>
+					<div class="col-6">
+						<div class="form-group mb-4">
+							<label for="rox">Gen E (ROX)</label>
+							<div class="input-group">
+								<input id="rox" type="number" name="rox" class="form-control">
+							</div>
+						</div>
+						<div class="form-group mb-4">
+							<label for="joe">IC Control (JOE)</label>
+							<div class="input-group">
+								<input id="joe" type="number" name="joe" class="form-control">
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>

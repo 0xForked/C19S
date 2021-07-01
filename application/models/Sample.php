@@ -105,4 +105,14 @@ class Sample extends CI_Model
 		return FALSE;
 	}
 
+	public function getLogs($id) {
+		return $this->db
+			->get_where('sample_logs', array('sample_id' => $id))
+			->result();
+	}
+
+	public function makeLog($data)
+	{
+		return $this->db->insert('sample_logs', $data);
+	}
 }

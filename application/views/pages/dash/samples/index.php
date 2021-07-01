@@ -23,11 +23,33 @@
 						Sampel data pemeriksaan pasien COVID-19!
 					</p>
 				</div>
-				<?php if ((int)$this->session->role_id === USER_ROLE_ADMIN || (int)$this->session->role_id === USER_ROLE_INPUTOR) : ?>
-					<div class="btn-toolbar mb-2 mb-md-0">
-						<a href="<?= base_url('samples/create') ?>" type="button" class="btn btn-danger h-75">Sampel baru</a>
-					</div>
-				<?php endif; ?>
+				<div class="d-flex justify-content-between">
+					<?php if ((int)$this->session->role_id === USER_ROLE_ADMIN || (int)$this->session->role_id === USER_ROLE_INPUTOR) : ?>
+						<div class="btn-toolbar mb-2 mb-md-0">
+							<a href="<?= base_url('samples/create') ?>" type="button" class="btn btn-danger h-75">Sampel baru</a>
+						</div>
+					<?php endif; ?>
+					<?php if ((int)$this->session->role_id === USER_ROLE_ADMIN) : ?>
+						<div class="mb-2 ms-2 btn-group  h-75">
+							<button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
+								<span class="me-2">Export</span>
+								<i class="fas fa-angle-down"></i>
+							</button>
+							<ul class="dropdown-menu py-0" aria-labelledby="dropdownMenuReference" style="margin: 0px;">
+								<li>
+									<a class="dropdown-item rounded-top" href="#" onclick="showNotification('error', 'not implemented yet')">
+										<b>CSV</b>
+									</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="#" onclick="showNotification('error', 'not implemented yet')">
+										<b>EXCEL</b>
+									</a>
+								</li>
+							</ul>
+						</div>
+					<?php endif; ?>
+				</div>
 			</div>
 
 			<div class="row">
@@ -73,36 +95,24 @@
 										</td>
 										<td>
 											<?php if ($sample->label_status == "TIDAK_LAYAK") : ?>
-												SAMPEL TIDAK LAYAK
+												SAMPEL TIDAK LAYAK <br>
+												(<?= $sample->logs['TIDAK_LAYAK']->created_at ?>)
 											<?php else : ?>
 												<?php if ($sample->status === 'ISSUED') : ?>
-													<?php if ((int)$this->session->role_id === USER_ROLE_LABELATOR) : ?>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#labeled-sample" data-bs-sampleid="<?= $sample->id ?>">
-															<span class="badge bg-warning py-1 px-2">
-																MENUNGGU PELABELAN <br>
-															</span>
-														</a>
-													<?php else : ?>
-														MENUNGGU <br> PELABELAN
-													<?php endif; ?>
-
+													MENUNGGU PELABELAN <br>
+													(<?= $sample->created_at ?>)
 												<?php elseif ($sample->status === 'LABELED') : ?>
-													<?php if ((int)$this->session->role_id === USER_ROLE_VALIDATOR) : ?>
-														<a href="#" data-bs-toggle="modal" data-bs-target="#verified-sample" data-bs-sampleid="<?= $sample->id ?>">
-															<span class="badge bg-warning py-1 px-2">
-																MENUNGGU VERIFIKASI <br>
-															</span>
-														</a>
-													<?php else : ?>
-														<span class="text-warning">
-															MENUNGGU <br> VERIFIKASI <br>
-															(<?= $sample->label_status ?>)
-														</span>
+													<?php if($sample->label_status !== 'PCR'): ?>
+														PROSES PELABELAN <br>
+														(<?= $sample->label_status ?> <?= $sample->logs[$sample->label_status]->created_at ?>)
+													<?php else: ?>
+														MENUNGGU VERIFIKASI <br>
+														(<?= $sample->label_status ?> <?= $sample->logs[$sample->label_status]->created_at ?>)
 													<?php endif; ?>
 												<?php elseif ($sample->status === 'VERIFIED') : ?>
 													<span class="text-<?= ($sample->verify_status === 'NEGATIVE') ? 'success' :  'danger' ?>">
 														TERVERIFIKASI <br>
-														(<?= $sample->verify_status ?>)
+														(<?= $sample->verify_status ?> <?= $sample->logs[$sample->verify_status]->created_at ?>)
 													</span>
 												<?php endif; ?>
 											<?php endif; ?>
@@ -116,28 +126,38 @@
 													<span class="sr-only">Toggle Dropdown</span>
 												</button>
 												<div class="dropdown-menu" data-popper-placement="bottom-end">
-													<?php if ((int)$this->session->role_id === USER_ROLE_ADMIN): ?>
-														<a href="#" class="dropdown-item">
-															<span class="fas fa-edit me-2"></span>
-															Labeling
-														</a>
+													<?php if($sample->status !== 'VERIFIED' && $sample->label_status !== "PCR" && $sample->label_status !== "TIDAK_LAYAK"): ?>
+														<?php if ((int)$this->session->role_id === USER_ROLE_ADMIN || (int)$this->session->role_id === USER_ROLE_LABELATOR): ?>
+															<a href="#" data-bs-toggle="modal" data-bs-target="#labeled-sample" data-bs-sampleid="<?= $sample->id ?>" class="dropdown-item text-warning">
+																<span class="fas fa-list me-2"></span>
+																Labeling
+															</a>
+														<?php endif; ?>
 													<?php endif; ?>
-													<?php if ((int)$this->session->role_id === USER_ROLE_ADMIN): ?>
-														<a href="#" class="dropdown-item">
-															<span class="fas fa-ve me-2"></span>
-															Verifikasi
-														</a>
+
+													<!--  kalau sudah terverifikasi dan belum dilabeli PCR tidak bisa di verifikasi	-->
+													<?php if($sample->status !== 'VERIFIED' && $sample->label_status === "PCR"): ?>
+														<!--  hanya akan terlihat pada admin dan validator	-->
+														<?php if ((int)$this->session->role_id === USER_ROLE_ADMIN || (int)$this->session->role_id === USER_ROLE_VALIDATOR) : ?>
+															<a href="#" data-bs-toggle="modal" data-bs-target="#verified-sample" data-bs-sampleid="<?= $sample->id ?>" class="dropdown-item text-success">
+																<span class="fas fa-check-circle me-2"></span>
+																Verifikasi
+															</a>
+														<?php endif; ?>
 													<?php endif; ?>
+
 													<?php if ((int)$this->session->role_id === USER_ROLE_ADMIN || (int)$this->session->role_id === USER_ROLE_INPUTOR) : ?>
 														<a href="<?= base_url("samples/$sample->id") ?>" class="dropdown-item">
 															<span class="fas fa-edit me-2"></span>
 															Edit
 														</a>
 													<?php endif; ?>
+
 													<a href="<?= base_url("samples/$sample->id/print") ?>" target="_blank" class="dropdown-item">
 														<span class="fas fa-print me-2"></span>
 														Print
 													</a>
+
 													<?php if ((int)$this->session->role_id === USER_ROLE_ADMIN || (int)$this->session->role_id === USER_ROLE_INPUTOR) : ?>
 														<a href="<?= base_url("samples/$sample->id/delete") ?>" class="dropdown-item text-danger rounded-bottom">
 															<span class="fas fa-trash-alt me-2"></span>
@@ -183,6 +203,29 @@
 			let recipient = button.getAttribute('data-bs-sampleid')
 			let modalBodyInput = verifiedSample.querySelector('.modal-body input')
 			modalBodyInput.value = recipient
+		})
+
+		let labelStatus = document.getElementById('label_status')
+		labelStatus.addEventListener('change', function (event) {
+			let pcrData = document.getElementById('pcr-detail')
+			let fam = document.getElementById('fam')
+			let cy5 = document.getElementById('cy5')
+			let rox = document.getElementById('rox')
+			let joe = document.getElementById('joe')
+
+			if (this.value === 'PCR') {
+				pcrData.classList.remove('d-none')
+				fam.setAttribute("required", "")
+				cy5.setAttribute("required", "")
+				rox.setAttribute("required", "")
+				joe.setAttribute("required", "")
+			} else {
+				pcrData.classList.add('d-none')
+				fam.removeAttribute("required")
+				cy5.removeAttribute("required")
+				rox.removeAttribute("required")
+				joe.removeAttribute("required")
+			}
 		})
 	</script>
 </body>
