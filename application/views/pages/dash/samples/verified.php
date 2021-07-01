@@ -13,10 +13,10 @@
 					<table class="table table-bordered table-responsive" id="verified-detail-table">
 						<thead class="text-center">
 						<tr>
-							<th>FAM</th>
-							<th>ROX</th>
-							<th>Cy5</th>
-							<th>JOE</th>
+							<th>Gen Orflab (FAM)</th>
+							<th>Gen N (Cy5)</th>
+							<th>Gen E (ROX)</th>
+							<th>IC Control (JOE)</th>
 						</tr>
 						</thead>
 						<tbody class="text-center"></tbody>
