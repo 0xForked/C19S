@@ -28,20 +28,23 @@ class SampleController extends CI_Controller
 
 	public function index()
 	{
-		if (
-			(int) $this->session->role_id === USER_ROLE_ADMIN ||
-			(int) $this->session->role_id === USER_ROLE_INPUTOR
-		) {
-			$data = $this->sample->get();
+		$data = $this->sample->get();
+
+		$index = 0;
+		foreach ($data as $sample) {
+			$logs = $this->sample->getLogs($sample->id);
+
+			$log_data = [];
+			foreach ($logs as $log) {
+				$log_data[$log->label] = $log;
+			}
+
+			$data[$index]->logs = $log_data;
+			$index++;
 		}
 
-		if ((int) $this->session->role_id === USER_ROLE_LABELATOR) {
-			$data = $this->sample->getWhere('status', 'ISSUED');
-		}
-
-		if ((int) $this->session->role_id === USER_ROLE_VALIDATOR) {
-			$data = $this->sample->getWhere('status', 'LABELED');
-		}
+		// how to get date ??
+		// $data[0]->logs['EXTRACTING']->created_at
 
 		$this->load->view('pages/dash/samples/index', [
 			'title' => 'Sampel Pemeriksaan',
@@ -236,6 +239,24 @@ class SampleController extends CI_Controller
 			return;
 		}
 
+		$description = (strtoupper($this->input->post('label_status')) === "PCR")
+				? json_encode([
+					"FAM" => $this->input->post('fam'),
+					"Cy5" => $this->input->post('cy5'),
+					"ROX" => $this->input->post('rox'),
+					"JOE" => $this->input->post('joe'),
+				])
+				: NULL;
+
+		$this->sample->makeLog([
+			'sample_id' => $this->input->post('id'),
+			'user_id' => $this->session->user_id,
+			'status' => 'LABEL',
+			'label' => strtoupper($this->input->post('label_status')),
+			'description' => $description,
+			'created_at' => date("Y-m-d H:i:s"),
+		]);
+
 		redirect_with_alert(
 			$this, 'success', 'samples',
 			"[SUCCESS] Labeled sample data"
@@ -278,6 +299,14 @@ class SampleController extends CI_Controller
 			);
 			return;
 		}
+
+		$this->sample->makeLog([
+			'sample_id' => $this->input->post('id'),
+			'user_id' => $this->session->user_id,
+			'status' => 'VERIFY',
+			'label' => strtoupper($this->input->post('verify_status')),
+			'created_at' => date("Y-m-d H:i:s"),
+		]);
 
 		redirect_with_alert(
 			$this, 'success', 'samples',

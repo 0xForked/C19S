@@ -50,8 +50,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 
+$route['check'] = 'CheckController/index';
+
 $route['login'] = 'Auth/LoginController/index';
 $route['logout']['POST'] = 'Auth/LogoutController/index';
+
+$route['search'] = 'Dash/SearchController/index';
 
 $route['home'] = 'Dash/HomeController/index';
 

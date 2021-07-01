@@ -1,13 +1,7 @@
-<div
-	class="modal fade"
-	id="add-patient"
-	tabindex="-1"
-	aria-labelledby="addPatientModal"
-	aria-hidden="true"
->
+<div class="modal fade" id="add-patient" tabindex="-1" aria-labelledby="addPatientModal" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<?= form_open('patients/create');?>
+			<?= form_open('patients/create'); ?>
 			<div class="modal-header">
 				<h5 class="modal-title" id="addPatientModal">Tambah pasien baru</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -46,10 +40,10 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-				<button type="submit" class="btn btn-primary">Save</button>
+				<button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+				<button type="submit" class="btn btn-danger">Save</button>
 			</div>
-			<?= form_close();?>
+			<?= form_close(); ?>
 		</div>
 	</div>
 </div>

@@ -10,7 +10,7 @@ class Explanation extends CI_Model
 	public function get()
 	{
 		return $this->db
-			->select('id, title')
+			->select('id, title, (SELECT COUNT(*) FROM samples WHERE explanation_id = explanations.id) as samples_count')
 			->from('explanations')
 			->get()
 			->result();
