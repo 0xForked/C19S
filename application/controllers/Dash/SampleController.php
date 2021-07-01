@@ -28,27 +28,12 @@ class SampleController extends CI_Controller
 
 	public function index()
 	{
-		$data = $this->sample->get();
-
-		$index = 0;
-		foreach ($data as $sample) {
-			$logs = $this->sample->getLogs($sample->id);
-
-			$log_data = [];
-			foreach ($logs as $log) {
-				$log_data[$log->label] = $log;
-			}
-
-			$data[$index]->logs = $log_data;
-			$index++;
-		}
-
 		// how to get date ??
 		// $data[0]->logs['EXTRACTING']->created_at
 
 		$this->load->view('pages/dash/samples/index', [
 			'title' => 'Sampel Pemeriksaan',
-			'samples' => $data
+			'samples' => $this->data()
 		]);
 	}
 
@@ -328,5 +313,56 @@ class SampleController extends CI_Controller
 		$this->form_validation->set_rules('explanation_id', 'Place of Birth', 'required');
 		$this->form_validation->set_rules('code', 'Date of Birth', 'required');
 		$this->form_validation->set_rules('indications', 'Phone', 'required');
+	}
+
+	private function data()
+	{
+		$data = $this->sample->get();
+
+		$index = 0;
+		foreach ($data as $sample) {
+			$logs = $this->sample->getLogs($sample->id);
+
+			$log_data = [];
+			foreach ($logs as $log) {
+				$log_data[$log->label] = $log;
+			}
+
+			$data[$index]->logs = $log_data;
+			$index++;
+		}
+
+		return $data;
+	}
+
+	public function exportCSV()
+	{
+		$file_name = time() . '_' . generate_random_string(16);
+		$fp = fopen("export/csv/$file_name.csv", 'w');
+
+		fputcsv($fp, array(
+			'NO. SPESIMEN', 'NAMA', 'UMUR', 'TANGGAL SAMPLING', 'KETERANGAN SWAB',
+			'TANGGAL PENERIMAAN SPESIMEN DILAB', 'TANGGAL PEMERIKSAAN SPESIMEN DILAB',
+			'KESIMPULAN'
+		));
+		foreach ($this->data() as $field) {
+			fputcsv($fp, array(
+				'NO. SPESIMEN' => $field->code,
+				'NAMA' => $field->patient_name,
+				'UMUR' => calculate_age($field->patient_date_of_birth),
+				'TANGGAL SAMPLING' => date('d-m-Y', strtotime($field->created_at)),
+				'KETERANGAN SWAB' => $field->explanation_title,
+				'TANGGAL PENERIMAAN SPESIMEN DILAB' => date('d-m-Y', strtotime($field->created_at)),
+				'TANGGAL PEMERIKSAAN SPESIMEN DILAB' => date('d-m-Y', strtotime($field->created_at)),
+				'KESIMPULAN' => "TEST"
+			));
+		}
+
+		fclose($fp);
+	}
+
+	public function exportExcel()
+	{
+
 	}
 }
